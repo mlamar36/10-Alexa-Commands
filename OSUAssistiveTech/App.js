@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { useState, useEffect } from 'react';
 import * as Speech from 'expo-speech';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function App() {
   const [isActive, setIsActive] = useState(false);
@@ -33,8 +34,8 @@ export default function App() {
       </View>
       <Text style={styles.font}>PRESS BUTTON TO HEAR A JOKE</Text>
       <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
-        <Text style={styles.buttonText}>Tell me a Joke</Text>
-        {/* <Icon name="face-grin-tears" size={30} color="#900" /> */}
+        {/* <Text style={styles.buttonText}>Tell me a Joke</Text> */}
+        <Icon name="grin-squint-tears" size={150} color="#FFFFFF" />
         {/* <FontAwesomeIcon icon="fa-solid fa-face-grin-tears" /> */}
       </TouchableOpacity>
     </View>
