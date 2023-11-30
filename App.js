@@ -1,29 +1,36 @@
 import { StatusBar } from 'expo-status-bar';
-import { Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Platform, StyleSheet, Text, View, TouchableOpacity, Switch } from 'react-native';
 import { useState, useEffect } from 'react';
 import * as Speech from 'expo-speech';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 export default function App() {
   const [isActive, setIsActive] = useState(false);
+  const [isTtsEnabled, setIsTtsEnabled] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-
+ 
   
   function handleButtonPress(){
     const textToSpeak = "Alexa, Tell me a joke.";
     setIsActive(!isActive);
     setIsSpeaking(true);
 
-    Speech.speak(textToSpeak, {
-      language:'en',
-      onVoice: 'onSpeaker',
-      onDone: () => {
-        setTimeout(() => {
-          setIsSpeaking(false);
-        },500); 
-      },
-    });
+    if(isTtsEnabled){
+      Speech.speak(textToSpeak, {
+        language:'en',
+        onVoice: 'onSpeaker',
+        onDone: () => {
+          setTimeout(() => {
+            setIsSpeaking(false);
+          },500); 
+        },
+      });
+    }
   };
+
+  function handleToggleSwitch(){
+    setIsTtsEnabled(!isTtsEnabled);
+  }
 
   
 
@@ -33,6 +40,7 @@ export default function App() {
         <Text style={styles.headerText}>Alexa Hub: Team 10</Text>
       </View>
       <Text style={styles.font}>PRESS BUTTON TO HEAR A JOKE</Text>
+      <Switch style={{ marginBottom: 20}} onValueChange={handleToggleSwitch} value={isTtsEnabled} />
       <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
         {/* <Text style={styles.buttonText}>Tell me a Joke</Text> */}
         <Icon name="grin-squint-tears" size={150} color="#FFFFFF" />
