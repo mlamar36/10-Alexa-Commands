@@ -10,38 +10,37 @@ export default function App() {
   const [isSpeaking, setIsSpeaking] = useState(false);
  
   
-  function handleButtonPress(){
+  async function handleButtonPress(){
+    if(isSpeaking){
+      return;
+    }
     const textToSpeak = "Alexa, Tell me a joke.";
     setIsActive(!isActive);
     setIsSpeaking(true);
 
     if(isTtsEnabled){
-      Speech.speak(textToSpeak, {
-        language:'en',
-        onVoice: 'onSpeaker',
-        onDone: () => {
-          setTimeout(() => {
-            setIsSpeaking(false);
-          },500); 
-        },
-      });
+        await Speech.speak(textToSpeak, {
+          language:'en',
+          onVoice: 'onSpeaker',
+        });
+      }
+      setTimeout(() => {
+        setIsSpeaking(false); 
+        setIsActive(false);
+      }, 2000) 
     }
-  };
-
   function handleToggleSwitch(){
     setIsTtsEnabled(!isTtsEnabled);
   }
-
-  
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Alexa Hub: Team 10</Text>
       </View>
       <Text style={styles.font}>PRESS BUTTON TO HEAR A JOKE</Text>
-      <Switch style={{ marginBottom: 20}} onValueChange={handleToggleSwitch} value={isTtsEnabled} />
-      <TouchableOpacity onPress={handleButtonPress} style={styles.button}>
+      <Text style={styles.font}>Use the switch to activate the text-to-speech</Text>
+      <Switch style={{ marginBottom: 20, borderColor: '#000', borderWidth: 2, borderRadius: 10 }} onValueChange={handleToggleSwitch} value={isTtsEnabled} trackColor={{ false: "#FFFFFF", true: "green" }}/>
+      <TouchableOpacity onPress={ handleButtonPress } style={styles.button} disabled={isActive}>
         {/* <Text style={styles.buttonText}>Tell me a Joke</Text> */}
         <Icon name="grin-squint-tears" size={150} color="#FFFFFF" />
         {/* <FontAwesomeIcon icon="fa-solid fa-face-grin-tears" /> */}
